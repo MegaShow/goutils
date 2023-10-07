@@ -7,6 +7,13 @@ import (
 	"icytown.com/goutils/testings/assert"
 )
 
+func TestNewHashSet(t *testing.T) {
+	s := NewHashSet[int]()
+	assert.NotNil(t, s)
+	s = NewHashSet[int](WithCapacity(10))
+	assert.NotNil(t, s)
+}
+
 func TestHashSet_Add(t *testing.T) {
 	s := NewHashSet[int]()
 	s.Add(1)

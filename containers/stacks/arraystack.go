@@ -14,8 +14,16 @@ type ArrayStack[T any] struct {
 // NewArrayStack create an array stack.
 //
 // 创建一个数组栈.
-func NewArrayStack[T any]() *ArrayStack[T] {
-	return &ArrayStack[T]{}
+func NewArrayStack[T any](opts ...Option) *ArrayStack[T] {
+	s := new(ArrayStack[T])
+
+	for _, opt := range opts {
+		if opt.capacity != 0 {
+			s.items = make([]T, 0, opt.capacity)
+		}
+	}
+
+	return s
 }
 
 // Peek try to get the top item of stack.

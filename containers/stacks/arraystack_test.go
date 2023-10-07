@@ -7,6 +7,16 @@ import (
 	"icytown.com/goutils/testings/assert"
 )
 
+func TestNewArrayStack(t *testing.T) {
+	s := NewArrayStack[int]()
+	assert.NotNil(t, s)
+	assert.Equal(t, 0, cap(s.items))
+
+	s = NewArrayStack[int](WithCapacity(10))
+	assert.NotNil(t, s)
+	assert.Equal(t, 10, cap(s.items))
+}
+
 func TestArrayStack_Peek(t *testing.T) {
 	s := NewArrayStack[int]()
 	top, ok := s.Peek()

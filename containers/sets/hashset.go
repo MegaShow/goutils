@@ -14,9 +14,18 @@ type HashSet[T comparable] struct {
 // NewHashSet create a hash set.
 //
 // 创建一个哈希集合.
-func NewHashSet[T comparable]() *HashSet[T] {
+func NewHashSet[T comparable](opts ...Option) *HashSet[T] {
 	s := new(HashSet[T])
-	s.m = make(map[T]struct{})
+
+	for _, opt := range opts {
+		if opt.capacity != 0 {
+			s.m = make(map[T]struct{}, opt.capacity)
+		}
+	}
+
+	if s.m == nil {
+		s.m = make(map[T]struct{})
+	}
 	return s
 }
 

@@ -50,6 +50,19 @@ func Nil[T comparable](t *testing.T, value T) bool {
 	return true
 }
 
+// NotNil asserts that value is not nil.
+//
+// 断言给定值不为 nil.
+func NotNil[T comparable](t *testing.T, value T) bool {
+	var zero T
+	if value == zero {
+		t.Helper()
+		actualBytes, _ := json.Marshal(value)
+		return Fail(t, "Should be not nil, actual: %s", string(actualBytes))
+	}
+	return true
+}
+
 // Zero asserts that value is zero.
 //
 // 断言给定值为 zero.
