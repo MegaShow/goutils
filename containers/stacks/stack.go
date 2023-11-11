@@ -3,7 +3,7 @@
 // stacks 包实现了多种栈数据结构, 比如 [ArrayStack].
 package stacks
 
-import "icytown.com/goutils/containers/internal"
+import "go.icytown.com/utils/containers/internal"
 
 // Stack is the interface for stacks.
 //

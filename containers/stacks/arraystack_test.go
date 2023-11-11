@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	"icytown.com/goutils/testings/assert"
+	"go.icytown.com/utils/testings/assert"
 )
 
 func TestNewArrayStack(t *testing.T) {

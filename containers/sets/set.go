@@ -3,7 +3,7 @@
 // 包 sets 实现了多种集合数据结构，比如 [HashSet].
 package sets
 
-import "icytown.com/goutils/containers/internal"
+import "go.icytown.com/utils/containers/internal"
 
 // Set is the interface for sets.
 //
