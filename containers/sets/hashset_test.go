@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	"go.icytown.com/utils/testings/assert"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestNewHashSet(t *testing.T) {
@@ -68,9 +68,9 @@ func TestHashSet_Values(t *testing.T) {
 	s.Add(1)
 	s.Add(2)
 	s.Add(3)
-	assert.EqualSliceUnorder(t, []int{1, 2, 3}, s.Values())
+	assert.ElementsMatch(t, []int{1, 2, 3}, s.Values())
 	s.Add(0)
-	assert.EqualSliceUnorder(t, []int{0, 1, 2, 3}, s.Values())
+	assert.ElementsMatch(t, []int{0, 1, 2, 3}, s.Values())
 }
 
 func TestHashSet_MarshalJSON(t *testing.T) {
@@ -83,12 +83,12 @@ func TestHashSet_MarshalJSON(t *testing.T) {
 	items := make([]int, 0)
 	err = json.Unmarshal(setBytes, &items)
 	assert.Nil(t, err)
-	assert.EqualSliceUnorder(t, []int{1, 2, 3}, items)
+	assert.ElementsMatch(t, []int{1, 2, 3}, items)
 }
 
 func TestHashSet_UnmarshalJSON(t *testing.T) {
 	var s *HashSet[int]
 	err := json.Unmarshal([]byte("[1,2,3]"), &s)
 	assert.Nil(t, err)
-	assert.EqualSliceUnorder(t, []int{1, 2, 3}, s.Values())
+	assert.ElementsMatch(t, []int{1, 2, 3}, s.Values())
 }

@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	"go.icytown.com/utils/testings/assert"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestNewArrayStack(t *testing.T) {
