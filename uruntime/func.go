@@ -1,4 +1,4 @@
-package runtimeutils
+package uruntime
 
 import (
 	"reflect"
@@ -7,9 +7,9 @@ import (
 )
 
 // GetFuncFullName returns full name of Golang function or method with package path,
-// e.g. go.icytown.com/goutils/runtimeutil.GetFuncFullName.
+// e.g. go.icytown.com/utils/runtimeutils.GetFuncFullName.
 //
-// 获取 Golang 的函数或方法包括包路径的名称, 比如 go.icytown.com/goutils/runtimeutil.GetFuncFullName.
+// 获取 Golang 的函数或方法包括包路径的名称, 比如 go.icytown.com/utils/runtimeutils.GetFuncFullName.
 func GetFuncFullName(fn any) string {
 	fnValue := reflect.ValueOf(fn)
 	if fnValue.Kind() != reflect.Func || fnValue.IsNil() {
