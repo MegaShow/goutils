@@ -1,3 +1,6 @@
+// Package uruntime provides utils of runtime.
+//
+// 包 uruntime 提供了运行时相关的工具.
 package uruntime
 
 import (

@@ -1,3 +1,6 @@
+// Package ucrypto provides utils of crypto.
+//
+// 包 ucrypto 提供了密码学相关的工具.
 package ucrypto
 
 import (
