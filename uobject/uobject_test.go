@@ -30,6 +30,20 @@ func TestIndirectOr(t *testing.T) {
 	assert.Equal(t, 12, IndirectOr(nil, 12))
 }
 
+func TestIsNotZero(t *testing.T) {
+	assert.True(t, IsNotZero(1))
+	assert.False(t, IsNotZero(0))
+	assert.True(t, IsNotZero("1"))
+	assert.False(t, IsNotZero(""))
+}
+
+func TestIsZero(t *testing.T) {
+	assert.False(t, IsZero(1))
+	assert.True(t, IsZero(0))
+	assert.False(t, IsZero("1"))
+	assert.True(t, IsZero(""))
+}
+
 func TestPtr(t *testing.T) {
 	var v1, v2 int = 0, 12
 	assert.Equal(t, &v1, Ptr(0))
