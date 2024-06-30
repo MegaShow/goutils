@@ -24,9 +24,9 @@ GoUtils 提供了以下工具库。
 | ucond | If, IfFunc |
 | ucrypto | MD5, SHA512 |
 | umap | Keys, Values |
-| uobject | Default, Indirect, IndirectOr, Ptr |
+| uobject | Default, Indirect, IndirectOr, IsNotZero, IsZero, Ptr |
 | uruntime | GetFuncFullName, GetFuncName |
-| uslice | Filter, Map, ToMap |
+| uslice | Distinct, Filter, GroupBy, Map, ToMap |
 
 除此之外，GoUtils 还提供了一些常用的容器封装。
 
@@ -35,6 +35,7 @@ GoUtils 提供了以下工具库。
 | maps | SyncMap |
 | sets | HashSet |
 | stacks | ArrayStack |
+| tuples | Pair, Triple |
 
 ## 协议
 
