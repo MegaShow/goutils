@@ -35,6 +35,22 @@ func IndirectOr[T any](valuePtr *T, defaultValue T) T {
 	return *valuePtr
 }
 
+// IsNotZero returns true if value is not zero. If value is zero, returns false.
+//
+// 返回给定值是否为非空值, 如果不为空值, 则返回 true; 如果为空值, 则返回 false.
+func IsNotZero[T comparable](value T) bool {
+	var zero T
+	return value != zero
+}
+
+// IsNotZero returns true if value is zero. If value is not zero, returns false.
+//
+// 返回给定值是否为空值, 如果为空值, 则返回 true; 如果不为空值, 则返回 false.
+func IsZero[T comparable](value T) bool {
+	var zero T
+	return value == zero
+}
+
 // Ptr returns a pointer that has same value.
 //
 // 返回指针变量, 其指向的值与传入的值相同.
