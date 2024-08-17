@@ -5,7 +5,7 @@
 [![GitHub Release](https://img.shields.io/github/v/release/megashow/goutils)](https://github.com/megashow/goutils/releases)
 [![Go Reference](https://pkg.go.dev/badge/go.icytown.com/utils.svg)](https://pkg.go.dev/go.icytown.com/utils)
 
-`go.icytown.com/utils` 是 MegaShow 的 Golang 工具库，基于 Go 1.21 和泛型能力，实现了常用的数据结构和工具函数。
+`go.icytown.com/utils` 是 MegaShow 的 Golang 工具库，基于 Go 1.21 和泛型能力，实现了常用的数据结构、工具、缓存封装等。
 
 ## 安装
 
@@ -23,12 +23,13 @@ GoUtils 提供了以下工具库。
 | -- | -- |
 | ucond | If, IfFunc |
 | ucrypto | MD5, SHA512 |
-| umap | Keys, Values |
+| ~~umap~~ | ~~Keys, Values~~ |
 | uobject | Default, Indirect, IndirectOr, IsNotZero, IsZero, Ptr |
 | uruntime | GetFuncFullName, GetFuncName |
-| uslice | Distinct, Filter, GroupBy, Map, ToMap |
+| uslice | Distinct, Find, Filter, GroupBy, Map, ToMap |
+| usync | Singleflight |
 
-除此之外，GoUtils 还提供了一些常用的容器封装。
+GoUtils 还提供了一些常用的容器封装。
 
 | 容器库 | 容器 |
 | -- | -- |
@@ -36,6 +37,10 @@ GoUtils 提供了以下工具库。
 | sets | HashSet |
 | stacks | ArrayStack |
 | tuples | Pair, Triple |
+
+除此之外，GoUtils 还提供了一些常用的缓存封装。
+
+- SimpleCache (实验性)：基于 map 的简单缓存实现。
 
 ## 协议
 
