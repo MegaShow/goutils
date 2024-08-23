@@ -23,7 +23,7 @@ GoUtils 提供了以下工具库。
 | -- | -- |
 | ucond | If, IfFunc |
 | ucrypto | MD5, SHA512 |
-| ~~umap~~ | ~~Keys, Values~~ |
+| umath | CeilFloat, FloorFloat, RoundFloat |
 | uobject | Default, Indirect, IndirectOr, IsNotZero, IsZero, Ptr |
 | uruntime | GetFuncFullName, GetFuncName |
 | uslice | Distinct, Find, Filter, GroupBy, Map, ToMap |

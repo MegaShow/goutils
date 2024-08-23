@@ -1,3 +1,6 @@
+// Package umap provides utils of map.
+//
+// 包 umap 提供了一些 map 相关的工具.
 package umap
 
 // Keys returns keys of map as a slice.
