@@ -75,6 +75,13 @@ func Map[T, R any](items []T, fn func(item T) R) []R {
 	return results
 }
 
+// Of creates a slice with items, if no items returns empty slice not nil.
+//
+// 创建一个切片, 如果未给定元素则返回空切片.
+func Of[T any](items ...T) []T {
+	return items
+}
+
 // ToMap converts slice to map.
 //
 // 将切片转换成 map.
