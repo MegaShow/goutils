@@ -17,3 +17,15 @@ func ExampleIfFunc() {
 	// 1
 	// 0
 }
+
+func ExampleNot() {
+	isZero := func(v int) bool {
+		return v == 0
+	}
+	isNotZero := Not(isZero)
+	fmt.Println(isNotZero(1))
+	fmt.Println(isNotZero(0))
+	// Output:
+	// true
+	// false
+}

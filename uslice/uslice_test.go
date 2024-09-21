@@ -7,13 +7,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestDistinct(t *testing.T) {
-	assert.Equal(t, []int{1, 2, 3, 4, 5}, Distinct([]int{1, 2, 3, 4, 5}))
-	assert.Equal(t, []int{1, 2, 4}, Distinct([]int{1, 2, 2, 4, 4}))
-	assert.Equal(t, []int{1, 2, 4}, Distinct([]int{1, 2, 2, 4, 4, 1}))
-	assert.Equal(t, []int{1, 2, 3}, Distinct([]int{1, 2, 2, 3, 1, 1}))
-}
-
 func TestFind(t *testing.T) {
 	value, ok := Find([]int{1, 2, 3}, func(v int) bool { return v == 1 })
 	assert.Equal(t, 1, value)
@@ -49,4 +42,18 @@ func TestToMap(t *testing.T) {
 	}
 	assert.Equal(t, map[int]obj{1: {id: 1, name: "name-1"}, 2: {id: 2, name: "name-2"}},
 		ToMap([]obj{{id: 1, name: "name-1"}, {id: 2, name: "name-2"}}, func(v obj) int { return v.id }))
+}
+
+func TestUnique(t *testing.T) {
+	assert.Equal(t, []int{1, 2, 3, 4, 5}, Unique([]int{1, 2, 3, 4, 5}))
+	assert.Equal(t, []int{1, 2, 4}, Unique([]int{1, 2, 2, 4, 4}))
+	assert.Equal(t, []int{1, 2, 4}, Unique([]int{1, 2, 2, 4, 4, 1}))
+	assert.Equal(t, []int{1, 2, 3}, Unique([]int{1, 2, 2, 3, 1, 1}))
+}
+
+func TestUniqueFunc(t *testing.T) {
+	assert.Equal(t, []int{1, 2, 3, 4, 5}, UniqueFunc([]int{1, 2, 3, 4, 5}, func(v int) int { return v }))
+	assert.Equal(t, []int{1, 2, 4}, UniqueFunc([]int{1, 2, 2, 4, 4}, func(v int) int { return v }))
+	assert.Equal(t, []int{1, 2, 4}, UniqueFunc([]int{1, 2, 2, 4, 4, 1}, func(v int) int { return v }))
+	assert.Equal(t, []int{1, 2, 3}, UniqueFunc([]int{1, 2, 2, 3, 1, 1}, func(v int) int { return v }))
 }

@@ -2,16 +2,6 @@ package uslice
 
 import "fmt"
 
-func ExampleDistinct() {
-	fmt.Println(Distinct([]int{}))
-	fmt.Println(Distinct([]int{1, 1, 2}))
-	fmt.Println(Distinct([]int{1, 1, 2, 1, 3}))
-	// Output:
-	// []
-	// [1 2]
-	// [1 2 3]
-}
-
 func ExampleFind() {
 	fmt.Println(Find([]int{1, 2, 3}, func(v int) bool { return v == 2 }))
 	fmt.Println(Find([]int{1, 2, 3}, func(v int) bool { return v == 0 }))
@@ -25,10 +15,10 @@ func ExampleFilter() {
 	b := Filter(a, func(v int) bool {
 		return v <= 2
 	})
-	fmt.Println(a) // a should not to be use.
+	fmt.Println(a)
 	fmt.Println(b)
 	// Output:
-	// [1 2 0]
+	// [1 2 3]
 	// [1 2]
 }
 
@@ -70,4 +60,24 @@ func ExampleToMap() {
 	fmt.Println(b)
 	// Output:
 	// map[1:1 4:2 9:3]
+}
+
+func ExampleUnique() {
+	fmt.Println(Unique([]int{}))
+	fmt.Println(Unique([]int{1, 1, 2}))
+	fmt.Println(Unique([]int{1, 1, 2, 1, 3}))
+	// Output:
+	// []
+	// [1 2]
+	// [1 2 3]
+}
+
+func ExampleUniqueFunc() {
+	a := []int{1, 1, 2, 1, 3}
+	b := UniqueFunc(a, func(v int) int {
+		return v % 2
+	})
+	fmt.Println(b)
+	// Output:
+	// [1 2]
 }
