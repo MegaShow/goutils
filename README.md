@@ -21,12 +21,12 @@ GoUtils 提供了以下工具库。
 
 | 工具库 | 函数 |
 | -- | -- |
-| ucond | If, IfFunc |
+| ucond | If, IfFunc, Not |
 | ucrypto | MD5, SHA512 |
 | umath | CeilFloat, FloorFloat, RoundFloat |
 | uobject | Default, Indirect, IndirectOr, IsNotZero, IsZero, Ptr |
 | uruntime | GetFuncFullName, GetFuncName |
-| uslice | Distinct, Find, Filter, GroupBy, Map, ToMap |
+| uslice | Find, Filter, GroupBy, Map, Of, ToMap, Unique, UniqueFunc |
 | usync | Singleflight |
 
 GoUtils 还提供了一些常用的容器封装。

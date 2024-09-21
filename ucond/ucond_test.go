@@ -17,3 +17,11 @@ func TestIfFunc(t *testing.T) {
 	assert.Equal(t, 1, IfFunc(true, func() int { return 1 }, func() int { return 2 }))
 	assert.Equal(t, 2, IfFunc(false, func() int { return 1 }, func() int { return 2 }))
 }
+
+func TestNot(t *testing.T) {
+	isZero := func(v int) bool {
+		return v == 0
+	}
+	assert.True(t, Not(isZero)(1))
+	assert.False(t, Not(isZero)(0))
+}

@@ -22,3 +22,12 @@ func IfFunc[T any](cond bool, trueFn, falseFn func() T) T {
 	}
 	return falseFn()
 }
+
+// Not creates a new function that returns opposite bool value.
+//
+// 创建一个返回相反布尔值的函数.
+func Not[T any](fn func(T) bool) func(T) bool {
+	return func(value T) bool {
+		return !fn(value)
+	}
+}
