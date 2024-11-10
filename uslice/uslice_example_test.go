@@ -10,6 +10,14 @@ func ExampleFind() {
 	// 0 false
 }
 
+func ExampleFindLast() {
+	fmt.Println(FindLast([]int{1, 2, 3}, func(v int) bool { return v == 2 }))
+	fmt.Println(FindLast([]int{1, 2, 3}, func(v int) bool { return v == 0 }))
+	// Output:
+	// 2 true
+	// 0 false
+}
+
 func ExampleFilter() {
 	a := []int{1, 2, 3}
 	b := Filter(a, func(v int) bool {

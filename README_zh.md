@@ -1,29 +1,27 @@
 # GoUtils
 
-English | [中文](README_zh.md)
+[English](README.md) | 中文
 
 [![GitHub Action](https://github.com/MegaShow/goutils/actions/workflows/main.yaml/badge.svg)](https://github.com/MegaShow/goutils/actions/workflows/main.yaml)
 [![CodeCov](https://codecov.io/gh/MegaShow/goutils/graph/badge.svg?token=VI2BCE8X5H)](https://codecov.io/gh/MegaShow/goutils)
 [![GitHub Release](https://img.shields.io/github/v/release/megashow/goutils)](https://github.com/megashow/goutils/releases)
 [![Go Reference](https://pkg.go.dev/badge/go.icytown.com/utils.svg)](https://pkg.go.dev/go.icytown.com/utils)
 
-> English version is translated by tool.
+`go.icytown.com/utils` 是 MegaShow 的 Golang 工具库，基于 Go 1.21 和泛型能力，实现了常用的数据结构、工具、缓存封装等。
 
-`go.icytown.com/utils` is MegaShow's Golang tool library, based on Go 1.21 and type generic. It implements common data structures, tools, cache and etc.
-
-## Installation
+## 安装
 
 ```sh
 go get go.icytown.com/utils@latest
 ```
 
-## Usages
+## 使用
 
-For details, please refer to [GoDoc](https://pkg.go.dev/go.icytown.com/utils)。
+详细的使用说明请查阅 [GoDoc](https://pkg.go.dev/go.icytown.com/utils)。
 
-GoUtils provides the following tools.
+GoUtils 提供了以下工具库。
 
-| Package | Functions or Data Structures |
+| 工具库 | 函数或数据结构 |
 | -- | -- |
 | ucond | If, IfFunc, Not |
 | ucrypto | MD5, SHA512 |
@@ -33,19 +31,19 @@ GoUtils provides the following tools.
 | uslice | Find, FindLast, Filter, GroupBy, Map, Of, ToMap, Unique, UniqueFunc |
 | usync | Singleflight |
 
-GoUtils alse provides some commonly used containers.
+GoUtils 还提供了一些常用的容器封装。
 
-| Package | Containers |
+| 容器库 | 容器 |
 | -- | -- |
 | maps | SyncMap |
 | sets | HashSet |
 | stacks | ArrayStack |
 | tuples | Pair, Triple |
 
-In addition, GoUtils alse provides some implementation of cache.
+除此之外，GoUtils 还提供了一些常用的缓存封装。
 
-- SimpleCache (Experimental)：a simple cache implementation based on map.
+- SimpleCache (实验性)：基于 map 的简单缓存实现。
 
-## License
+## 协议
 
-GoUtils is distributed under the MIT License.
+GoUtils 基于 MIT 协议开源。

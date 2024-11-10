@@ -3,27 +3,39 @@
 // 包 uslice 提供了切片相关的工具.
 package uslice
 
-// Find returns the first item which satisfy the provided function.
+// Find returns the first item which satisfy the match function.
 //
 // 返回第一个满足给定函数条件的元素.
-func Find[T any](items []T, fn func(item T) bool) (item T, ok bool) {
+func Find[T any](items []T, match func(item T) bool) (res T, ok bool) {
 	for _, item := range items {
-		if fn(item) {
+		if match(item) {
 			return item, true
 		}
 	}
-	return item, false
+	return
 }
 
-// Filter creates a new slice with items that satisfy the provided function.
+// Find returns the last item which satisfy the match function.
+//
+// 返回最后一个满足给定函数条件的元素.
+func FindLast[T any](items []T, match func(item T) bool) (res T, ok bool) {
+	for i := len(items) - 1; i >= 0; i-- {
+		if match(items[i]) {
+			return items[i], true
+		}
+	}
+	return
+}
+
+// Filter creates a new slice with items that satisfy the match function.
 // If wants to modify source slice, please use [slices.DeleteFunc].
 //
 // 创建一个新的切片, 确保切片每一个元素都满足给定函数条件.
 // 如果想要在原切片上修改, 请使用 [slices.DeleteFunc].
-func Filter[T any](items []T, fn func(item T) bool) []T {
+func Filter[T any](items []T, match func(item T) bool) []T {
 	results := make([]T, 0, len(items))
 	for _, item := range items {
-		if fn(item) {
+		if match(item) {
 			results = append(results, item)
 		}
 	}
@@ -45,10 +57,10 @@ func GroupBy[T any, K comparable](items []T, conv func(item T) K) map[K][]T {
 // Map creates a new slice populated with the results of calling a provided function on every item in the calling array.
 //
 // 创建一个新的切片, 这个新切片由原切片中的每个元素调用一次提供的函数后的返回值组成.
-func Map[T, R any](items []T, fn func(item T) R) []R {
+func Map[T, R any](items []T, conv func(item T) R) []R {
 	results := make([]R, len(items))
 	for idx, item := range items {
-		results[idx] = fn(item)
+		results[idx] = conv(item)
 	}
 	return results
 }
@@ -94,11 +106,11 @@ func Unique[T comparable](items []T) []T {
 //
 // 创建一个新的切片, 确保切片每一个元素对应函数生成的键只存在一次.
 // 如果想要在原切片上修改, 请对有序的切片使用 [slices.CompactFunc].
-func UniqueFunc[T any, K comparable](items []T, fn func(item T) K) []T {
+func UniqueFunc[T any, K comparable](items []T, hash func(item T) K) []T {
 	exists := make(map[K]struct{}, len(items))
 	results := make([]T, 0, len(items))
 	for _, item := range items {
-		k := fn(item)
+		k := hash(item)
 		if _, ok := exists[k]; ok {
 			continue
 		}
