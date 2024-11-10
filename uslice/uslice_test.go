@@ -19,6 +19,18 @@ func TestFind(t *testing.T) {
 	assert.False(t, ok)
 }
 
+func TestFindLast(t *testing.T) {
+	value, ok := FindLast([]int{1, 2, 3}, func(v int) bool { return v == 1 })
+	assert.Equal(t, 1, value)
+	assert.True(t, ok)
+	value, ok = FindLast([]int{1, 2, 3}, func(v int) bool { return v > 0 })
+	assert.Equal(t, 3, value)
+	assert.True(t, ok)
+	value, ok = FindLast([]int{1, 2, 3}, func(v int) bool { return v < 0 })
+	assert.Equal(t, 0, value)
+	assert.False(t, ok)
+}
+
 func TestFilter(t *testing.T) {
 	assert.Equal(t, []int{2, 3}, Filter([]int{1, 2, 3}, func(v int) bool { return v > 1 }))
 	assert.Equal(t, []string{"1", "2", "3"}, Filter([]string{"1", "2", "3"}, func(v string) bool { return v != "" }))
