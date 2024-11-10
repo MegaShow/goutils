@@ -24,7 +24,7 @@ GoUtils 提供了以下工具库。
 | 工具库 | 函数或数据结构 |
 | -- | -- |
 | ucond | If, IfFunc, Not |
-| ucrypto | MD5, SHA512 |
+| ucrypto | MD5Hex, SHA1Hex, SHA256Hex, SHA512Hex |
 | umath | CeilFloat, FloorFloat, RoundFloat |
 | uobject | Default, Indirect, IndirectOr, IsNotZero, IsZero, Ptr |
 | uruntime | GetFuncFullName, GetFuncName |

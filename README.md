@@ -26,7 +26,7 @@ GoUtils provides the following tools.
 | Package | Functions or Data Structures |
 | -- | -- |
 | ucond | If, IfFunc, Not |
-| ucrypto | MD5, SHA512 |
+| ucrypto | MD5Hex, SHA1Hex, SHA256Hex, SHA512Hex |
 | umath | CeilFloat, FloorFloat, RoundFloat |
 | uobject | Default, Indirect, IndirectOr, IsNotZero, IsZero, Ptr |
 | uruntime | GetFuncFullName, GetFuncName |
