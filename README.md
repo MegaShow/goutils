@@ -38,6 +38,7 @@ GoUtils alse provides some commonly used containers.
 | Package | Containers |
 | -- | -- |
 | maps | SyncMap |
+| pools | Pool |
 | sets | HashSet |
 | stacks | ArrayStack |
 | tuples | Pair, Triple |

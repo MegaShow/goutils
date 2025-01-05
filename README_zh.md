@@ -36,6 +36,7 @@ GoUtils 还提供了一些常用的容器封装。
 | 容器库 | 容器 |
 | -- | -- |
 | maps | SyncMap |
+| pools | Pool |
 | sets | HashSet |
 | stacks | ArrayStack |
 | tuples | Pair, Triple |
