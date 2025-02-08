@@ -32,6 +32,7 @@ GoUtils provides the following tools.
 | uruntime | GetFuncFullName, GetFuncName |
 | uslice | Find, FindLast, Filter, GroupBy, Map, Of, ToMap, Unique, UniqueFunc |
 | usync | Singleflight |
+| uversion | SemVer |
 
 GoUtils alse provides some commonly used containers.
 
