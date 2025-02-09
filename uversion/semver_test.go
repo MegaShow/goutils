@@ -16,6 +16,8 @@ func TestNewSemVer(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Equal(t, "0.1.3-alpha+fd12", ver.String())
 
+	_, err = NewSemVer(0, 1, 3, "alpha+", "fd")
+	assert.NotNil(t, err)
 	_, err = NewSemVer(0, 1, 3, "alpha", "fd12+")
 	assert.NotNil(t, err)
 }
@@ -42,6 +44,16 @@ func TestParseSemVer(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Equal(t, "0.1.3+fd12", ver.String())
 
+	_, err = ParseSemVer("1.0")
+	assert.NotNil(t, err)
+	_, err = ParseSemVer("x.0.0")
+	assert.NotNil(t, err)
+	_, err = ParseSemVer("1.y.0")
+	assert.NotNil(t, err)
+	_, err = ParseSemVer("1.0.z")
+	assert.NotNil(t, err)
+	_, err = ParseSemVer("0.1.3-alpha*")
+	assert.NotNil(t, err)
 	_, err = ParseSemVer("0.1.3-alpha+fd12+")
 	assert.NotNil(t, err)
 }
@@ -203,6 +215,7 @@ func TestSemVer_Compare(t *testing.T) {
 	assert.Equal(t, 1, MustParseSemVer("2.1.1").Compare(MustParseSemVer("2.1.0")))
 
 	assert.Equal(t, -1, MustParseSemVer("1.0.0-alpha").Compare(MustParseSemVer("1.0.0")))
+	assert.Equal(t, 1, MustParseSemVer("1.0.0").Compare(MustParseSemVer("1.0.0-alpha")))
 	assert.Equal(t, 0, MustParseSemVer("1.0.0+fd").Compare(MustParseSemVer("1.0.0+ff")))
 
 	assert.Equal(t, -1, MustParseSemVer("1.0.0-alpha").Compare(MustParseSemVer("1.0.0-alpha.1")))

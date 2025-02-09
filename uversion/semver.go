@@ -295,7 +295,7 @@ func (v SemVer) Compare(other SemVer) int {
 	}
 
 	vParts := strings.Split(v.pre, ".")
-	oParts := strings.Split(v.pre, ".")
+	oParts := strings.Split(other.pre, ".")
 	for i := 0; i < len(vParts) && i < len(oParts); i++ {
 		if vParts[i] == oParts[i] {
 			continue
@@ -307,7 +307,7 @@ func (v SemVer) Compare(other SemVer) int {
 		}
 		return ucond.If(vNum > oNum, 1, -1)
 	}
-	return ucond.If(len(vParts) < len(oParts), 1, -1)
+	return ucond.If(len(vParts) > len(oParts), 1, -1)
 }
 
 var semVerIdentifierReg = regexp.MustCompile(`^[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*$`)
