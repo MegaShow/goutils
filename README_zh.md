@@ -30,6 +30,7 @@ GoUtils 提供了以下工具库。
 | uruntime | GetFuncFullName, GetFuncName |
 | uslice | Find, FindLast, Filter, GroupBy, Map, Of, ToMap, Unique, UniqueFunc |
 | usync | Singleflight |
+| uversion | SemVer |
 
 GoUtils 还提供了一些常用的容器封装。
 
