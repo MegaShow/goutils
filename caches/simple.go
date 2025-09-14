@@ -87,7 +87,7 @@ func (c *simpleCache[K, V]) Get(ctx context.Context, key K) (V, error) {
 	}
 
 	var zero V
-	return zero, NotFound
+	return zero, ErrNotFound
 }
 
 // Set writes item in cache by key.

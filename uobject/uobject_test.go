@@ -16,14 +16,14 @@ func TestDefault(t *testing.T) {
 }
 
 func TestIndirect(t *testing.T) {
-	var v1, v2 int = 0, 12
+	var v1, v2 = 0, 12
 	assert.Equal(t, 0, Indirect(&v1))
 	assert.Equal(t, 12, Indirect(&v2))
 	assert.Equal(t, 0, Indirect[int](nil))
 }
 
 func TestIndirectOr(t *testing.T) {
-	var v1, v2 int = 0, 12
+	var v1, v2 = 0, 12
 	assert.Equal(t, 0, IndirectOr(&v1, 12))
 	assert.Equal(t, 12, IndirectOr(&v2, 13))
 	assert.Equal(t, 0, IndirectOr(nil, 0))
@@ -45,7 +45,7 @@ func TestIsZero(t *testing.T) {
 }
 
 func TestPtr(t *testing.T) {
-	var v1, v2 int = 0, 12
+	var v1, v2 = 0, 12
 	assert.Equal(t, &v1, Ptr(0))
 	assert.Equal(t, &v2, Ptr(12))
 }

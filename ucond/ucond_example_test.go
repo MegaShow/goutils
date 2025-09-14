@@ -1,6 +1,8 @@
 package ucond
 
-import "fmt"
+import (
+	"fmt"
+)
 
 func ExampleIf() {
 	fmt.Println(If(true, 1, 0))
@@ -16,6 +18,14 @@ func ExampleIfFunc() {
 	// Output:
 	// 1
 	// 0
+}
+
+func ExampleMust() {
+	fmt.Println(Must(1, nil))
+	// Must(0, errors.New("test")) // this will panic
+
+	// Output:
+	// 1
 }
 
 func ExampleNot() {

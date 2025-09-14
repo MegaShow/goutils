@@ -46,11 +46,7 @@ func NewSemVer(major, minor, patch uint64, pre, build string) (SemVer, error) {
 //
 // 创建一个 SemVer, 如果版本是非法的则 panic.
 func MustNewSemVer(major, minor, patch uint64, pre, build string) SemVer {
-	ver, err := NewSemVer(major, minor, patch, pre, build)
-	if err != nil {
-		panic(err)
-	}
-	return ver
+	return ucond.Must(NewSemVer(major, minor, patch, pre, build))
 }
 
 // ParseSemVer parses string to SemVer with format major.minor.patch-pre+build.
@@ -107,11 +103,7 @@ func ParseSemVer(s string) (SemVer, error) {
 // 解析字符串成版本, 格式为 major.minor.patch-pre+build.
 // 如果字符串是非法的则 panic.
 func MustParseSemVer(s string) SemVer {
-	ver, err := ParseSemVer(s)
-	if err != nil {
-		panic(err)
-	}
-	return ver
+	return ucond.Must(ParseSemVer(s))
 }
 
 // Major returns major version.

@@ -15,7 +15,7 @@ func Example() {
 			return fmt.Sprint(key), nil
 		}),
 	)
-	defer cache.Close()
+	defer func() { _ = cache.Close() }()
 
 	fmt.Println(cache.Get(ctx, 1))
 	fmt.Println(cache.Get(ctx, 2))

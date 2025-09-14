@@ -10,10 +10,10 @@ import (
 )
 
 var (
-	// NotFound is the error returned when item not found in cache.
+	// ErrNotFound is the error returned when item not found in cache.
 	//
 	// 当缓存中找不到数据时返回的错误.
-	NotFound = errors.New("item not found")
+	ErrNotFound = errors.New("item not found")
 )
 
 // Cache is the universal interface for caches.

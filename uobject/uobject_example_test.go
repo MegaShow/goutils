@@ -11,7 +11,7 @@ func ExampleDefault() {
 }
 
 func ExampleIndirect() {
-	var v int = 1
+	var v = 1
 	fmt.Println(Indirect(&v))
 	fmt.Println(Indirect[int](nil))
 	// Output:
@@ -20,9 +20,9 @@ func ExampleIndirect() {
 }
 
 func ExampleIndirectOr() {
-	var v int = 1
+	var v = 1
 	fmt.Println(IndirectOr(&v, 100))
-	fmt.Println(IndirectOr[int](nil, 100))
+	fmt.Println(IndirectOr(nil, 100))
 	// Output:
 	// 1
 	// 100
