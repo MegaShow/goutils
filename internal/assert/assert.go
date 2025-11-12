@@ -65,7 +65,7 @@ func False(t Testing, condition bool) bool {
 }
 
 func Nil(t Testing, value any) bool {
-	if isNil(value) {
+	if !isNil(value) {
 		t.Helper()
 		t.Errorf("Should be nil, but got %#v", value)
 		return false
@@ -83,7 +83,7 @@ func NotEqual[T any](t Testing, expected, actual T) bool {
 }
 
 func NotNil(t Testing, value any) bool {
-	if !isNil(value) {
+	if isNil(value) {
 		t.Helper()
 		t.Errorf("Should be not nil, but got nil")
 		return false
