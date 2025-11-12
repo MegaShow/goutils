@@ -3,7 +3,7 @@ package xstring
 import (
 	"testing"
 
-	"github.com/stretchr/testify/assert"
+	"go.icytown.com/utils/internal/assert"
 )
 
 func TestBytesToString(t *testing.T) {

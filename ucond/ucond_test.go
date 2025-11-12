@@ -4,7 +4,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
+	"go.icytown.com/utils/internal/assert"
 )
 
 func TestIf(t *testing.T) {

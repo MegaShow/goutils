@@ -10,7 +10,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/stretchr/testify/assert"
+	"go.icytown.com/utils/internal/assert"
 )
 
 func TestSingleflight_Do(t *testing.T) {

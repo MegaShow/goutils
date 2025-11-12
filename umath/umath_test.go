@@ -3,7 +3,7 @@ package umath
 import (
 	"testing"
 
-	"github.com/stretchr/testify/assert"
+	"go.icytown.com/utils/internal/assert"
 )
 
 func TestCeilFloat(t *testing.T) {

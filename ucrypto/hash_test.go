@@ -3,7 +3,7 @@ package ucrypto
 import (
 	"testing"
 
-	"github.com/stretchr/testify/assert"
+	"go.icytown.com/utils/internal/assert"
 )
 
 func TestMD5Hex(t *testing.T) {

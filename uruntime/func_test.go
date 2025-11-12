@@ -1,6 +1,10 @@
 package uruntime
 
-import "testing"
+import (
+	"testing"
+
+	"go.icytown.com/utils/internal/assert"
+)
 
 var __fnVar func(a, b int) int
 
@@ -14,49 +18,25 @@ func (obj __struct) Method() {}
 func (obj __struct) method() {}
 
 func TestGetFuncFullName(t *testing.T) {
-	tests := []struct {
-		fn   any
-		want string
-	}{
-		{fn: GetFuncFullName, want: "go.icytown.com/utils/uruntime.GetFuncFullName"},
-		{fn: GetFuncName, want: "go.icytown.com/utils/uruntime.GetFuncName"},
-		{fn: func() {}, want: "go.icytown.com/utils/uruntime.TestGetFuncFullName.func1"},
-		{fn: __add, want: "go.icytown.com/utils/uruntime.__add"},
-		{fn: __fnVar, want: ""},
-		{fn: nil, want: ""},
-		{fn: 1, want: ""},
-		{fn: __struct.Method, want: "go.icytown.com/utils/uruntime.__struct.Method"},
-		{fn: __struct.method, want: "go.icytown.com/utils/uruntime.__struct.method"},
-	}
-	for _, tt := range tests {
-		t.Run("", func(t *testing.T) {
-			if got := GetFuncFullName(tt.fn); got != tt.want {
-				t.Errorf("GetFuncFullName() = %v, want %v", got, tt.want)
-			}
-		})
-	}
+	assert.Equal(t, "go.icytown.com/utils/uruntime.GetFuncFullName", GetFuncFullName(GetFuncFullName))
+	assert.Equal(t, "go.icytown.com/utils/uruntime.GetFuncName", GetFuncFullName(GetFuncName))
+	assert.Equal(t, "go.icytown.com/utils/uruntime.TestGetFuncFullName.func1", GetFuncFullName(func() {}))
+	assert.Equal(t, "go.icytown.com/utils/uruntime.__add", GetFuncFullName(__add))
+	assert.Equal(t, "", GetFuncFullName(__fnVar))
+	assert.Equal(t, "", GetFuncFullName(nil))
+	assert.Equal(t, "", GetFuncFullName(1))
+	assert.Equal(t, "go.icytown.com/utils/uruntime.__struct.Method", GetFuncFullName(__struct.Method))
+	assert.Equal(t, "go.icytown.com/utils/uruntime.__struct.method", GetFuncFullName(__struct.method))
 }
 
 func TestGetFuncName(t *testing.T) {
-	tests := []struct {
-		fn   any
-		want string
-	}{
-		{fn: GetFuncFullName, want: "GetFuncFullName"},
-		{fn: GetFuncName, want: "GetFuncName"},
-		{fn: func() {}, want: "func1"},
-		{fn: __add, want: "__add"},
-		{fn: __fnVar, want: ""},
-		{fn: nil, want: ""},
-		{fn: 1, want: ""},
-		{fn: __struct.Method, want: "Method"},
-		{fn: __struct.method, want: "method"},
-	}
-	for _, tt := range tests {
-		t.Run("", func(t *testing.T) {
-			if got := GetFuncName(tt.fn); got != tt.want {
-				t.Errorf("GetFuncName() = %v, want %v", got, tt.want)
-			}
-		})
-	}
+	assert.Equal(t, "GetFuncFullName", GetFuncName(GetFuncFullName))
+	assert.Equal(t, "GetFuncName", GetFuncName(GetFuncName))
+	assert.Equal(t, "func1", GetFuncName(func() {}))
+	assert.Equal(t, "__add", GetFuncName(__add))
+	assert.Equal(t, "", GetFuncName(__fnVar))
+	assert.Equal(t, "", GetFuncName(nil))
+	assert.Equal(t, "", GetFuncName(1))
+	assert.Equal(t, "Method", GetFuncName(__struct.Method))
+	assert.Equal(t, "method", GetFuncName(__struct.method))
 }

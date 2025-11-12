@@ -3,7 +3,7 @@ package pools
 import (
 	"testing"
 
-	"github.com/stretchr/testify/assert"
+	"go.icytown.com/utils/internal/assert"
 )
 
 func TestNewPool(t *testing.T) {
