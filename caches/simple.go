@@ -24,7 +24,7 @@ func (item *simpleItem[V]) isExpired(now *time.Time) bool {
 }
 
 type simpleCache[K comparable, V any] struct {
-	baseCache[K, V]
+	opts  *Options[K, V]
 	mu    sync.RWMutex
 	sf    usync.Singleflight[K, V]
 	items map[K]simpleItem[V]
@@ -36,23 +36,25 @@ type simpleCache[K comparable, V any] struct {
 // 创建一个简单实现的缓存.
 func NewSimpleCache[K comparable, V any](opts ...Option[K, V]) Cache[K, V] {
 	c := &simpleCache[K, V]{
-		items: make(map[K]simpleItem[V]),
+		opts:  applyOptions(nil, opts...),
 		close: make(chan struct{}),
 	}
-	c.initOpts(opts)
+	c.items = make(map[K]simpleItem[V], c.opts.Size)
 
-	// 创建 goroutine 定时清理缓存
-	go func() {
-		ticker := time.NewTicker(c.cleanDuration)
-		for {
-			select {
-			case <-ticker.C:
-				c.update()
-			case <-c.close:
-				return
+	// 指定清理时间时, 创建 goroutine 定时清理缓存
+	if c.opts.CleanDuration > 0 {
+		go func() {
+			ticker := time.NewTicker(c.opts.CleanDuration)
+			for {
+				select {
+				case <-ticker.C:
+					c.evict(c.opts.Size)
+				case <-c.close:
+					return
+				}
 			}
-		}
-	}()
+		}()
+	}
 
 	return c
 }
@@ -77,13 +79,14 @@ func (c *simpleCache[K, V]) Get(ctx context.Context, key K) (V, error) {
 	}
 
 	// 加载数据
-	if c.loaderFunc != nil {
-		value, err := c.sf.Do(key, func() (V, error) { return c.loaderFunc(ctx, key) })
-		if err != nil {
+	if c.opts.LoadFunc != nil {
+		return c.sf.Do(key, func() (V, error) {
+			value, err := c.opts.LoadFunc(ctx, key)
+			if err == nil {
+				_ = c.Set(ctx, key, value)
+			}
 			return value, err
-		}
-		_ = c.Set(ctx, key, value)
-		return value, nil
+		})
 	}
 
 	var zero V
@@ -95,38 +98,56 @@ func (c *simpleCache[K, V]) Get(ctx context.Context, key K) (V, error) {
 // 根据 key 写入缓存数据.
 func (c *simpleCache[K, V]) Set(_ context.Context, key K, value V) error {
 	item := simpleItem[V]{value: value}
-	if c.expiration > 0 {
-		item.expire = time.Now().Add(c.expiration)
+	if c.opts.Expiration > 0 {
+		item.expire = time.Now().Add(c.opts.Expiration)
+	}
+
+	// 未指定清理时间, 则在写入数据时检查是否需要清理
+	if c.opts.CleanDuration == 0 {
+		c.mu.RLock()
+		cacheLen := len(c.items)
+		c.mu.RUnlock()
+		if c.opts.Size > 0 && cacheLen >= c.opts.Size {
+			c.evict(c.opts.Size - 1)
+		}
 	}
 
 	c.mu.Lock()
-	defer c.mu.Unlock()
 	c.items[key] = item
+	c.mu.Unlock()
 	return nil
 }
 
-func (c *simpleCache[K, V]) update() {
-	// 获取过期数据
+func (c *simpleCache[K, V]) evict(maxSize int) {
+	// 获取需要逐出的数据
 	now := time.Now()
-	expiredKeys := make([]K, 0)
+	evictKeys := make([]K, 0)
 	c.mu.RLock()
 	for key, item := range c.items {
 		if item.isExpired(&now) {
-			expiredKeys = append(expiredKeys, key)
+			evictKeys = append(evictKeys, key)
+		}
+	}
+	// 过期数据逐出还不够, 需要逐出未过期数据
+	if maxSize > 0 && len(evictKeys) < len(c.items)-maxSize {
+		for key, item := range c.items {
+			if !item.isExpired(&now) {
+				evictKeys = append(evictKeys, key)
+				if len(evictKeys) >= len(c.items)-maxSize {
+					break
+				}
+			}
 		}
 	}
 	c.mu.RUnlock()
-	if len(expiredKeys) == 0 {
+	if len(evictKeys) == 0 {
 		return
 	}
 
-	// 清除过期数据
+	// 清除数据
 	c.mu.Lock()
-	for _, key := range expiredKeys {
-		item, ok := c.items[key]
-		if ok && item.isExpired(&now) {
-			delete(c.items, key)
-		}
+	for _, key := range evictKeys {
+		delete(c.items, key)
 	}
 	c.mu.Unlock()
 }

@@ -48,7 +48,7 @@ func TestSimpleCache_Get(t *testing.T) {
 	assert.Zero(t, value)
 
 	// 测试数据加载
-	cacheWithLoader := NewSimpleCache(WithLoaderFunc(func(ctx context.Context, key int) (string, error) {
+	cacheWithLoader := NewSimpleCache(WithLoadFunc(func(ctx context.Context, key int) (string, error) {
 		if key <= 0 {
 			return "", ErrNotFound
 		}

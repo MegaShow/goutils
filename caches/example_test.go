@@ -11,7 +11,7 @@ func Example() {
 	cache := NewSimpleCache(
 		WithCleanDuration[int, string](time.Minute),
 		WithExpiration[int, string](time.Hour),
-		WithLoaderFunc(func(ctx context.Context, key int) (string, error) {
+		WithLoadFunc(func(ctx context.Context, key int) (string, error) {
 			return fmt.Sprint(key), nil
 		}),
 	)
