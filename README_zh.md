@@ -28,7 +28,7 @@ GoUtils 提供了以下工具库。
 | umath | CeilFloat, FloorFloat, RoundFloat |
 | uobject | Default, Indirect, IndirectOr, IsNotZero, IsZero, Ptr |
 | uruntime | GetFuncFullName, GetFuncName |
-| uslice | Find, FindLast, Filter, GroupBy, Map, Of, ToMap, Unique, UniqueFunc |
+| uslice | All, Find, FindLast, Filter, GroupBy, Map, Of, ToMap, Unique, UniqueFunc |
 | usync | Singleflight |
 | uversion | SemVer |
 

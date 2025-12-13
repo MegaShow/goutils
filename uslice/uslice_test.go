@@ -7,6 +7,12 @@ import (
 	"go.icytown.com/utils/internal/assert"
 )
 
+func TestAll(t *testing.T) {
+	assert.True(t, All([]int{1, 2, 3}, func(v int) bool { return v > 0 }))
+	assert.False(t, All([]int{1, 2, 3}, func(v int) bool { return v > 1 }))
+	assert.True(t, All([]int{}, func(v int) bool { return v > 0 }))
+}
+
 func TestFind(t *testing.T) {
 	value, ok := Find([]int{1, 2, 3}, func(v int) bool { return v == 1 })
 	assert.Equal(t, 1, value)

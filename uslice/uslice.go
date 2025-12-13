@@ -3,9 +3,23 @@
 // 包 uslice 提供了切片相关的工具.
 package uslice
 
+// All returns true if all items satisfy the match function.
+//
+// 返回 true 如果所有元素都满足给定函数条件.
+func All[T any](items []T, match func(item T) bool) bool {
+	for _, item := range items {
+		if !match(item) {
+			return false
+		}
+	}
+	return true
+}
+
 // Find returns the first item which satisfy the match function.
+// If wants to get index please use standard [slices.IndexFunc].
 //
 // 返回第一个满足给定函数条件的元素.
+// 如果期望获取元素下标请使用标准库函数 [slices.IndexFunc].
 func Find[T any](items []T, match func(item T) bool) (res T, ok bool) {
 	for _, item := range items {
 		if match(item) {
