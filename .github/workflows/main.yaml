@@ -14,29 +14,29 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
       - name: Setup Go
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v7
         with:
-          go-version: '1.25.x'
+          go-version: '1.27.x'
       - name: Setup Golang CI Lint
-        uses: golangci/golangci-lint-action@v8
+        uses: golangci/golangci-lint-action@v9
 
   test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        go-version: [ '1.21.x', '1.22.x', '1.23.x', '1.24.x', '1.25.x', '1.26.x' ]
+        go-version: [ '1.21.x', '1.22.x', '1.23.x', '1.24.x', '1.25.x', '1.26.x', '1.27.x' ]
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
       - name: Setup Go
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v7
         with:
           go-version: ${{ matrix.go-version }}
       - name: Test
         run: go test ./... -race -coverprofile=coverage.out
       - name: Codecov
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v7
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
