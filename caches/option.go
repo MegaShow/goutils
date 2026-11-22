@@ -15,9 +15,9 @@ type Option[K comparable, V any] func(opts *Options[K, V])
 // 缓存配置选项.
 type Options[K comparable, V any] struct {
 	// CleanDuration is the duration of cache item to be cleaned asynchronously,
-	// if not set, the cache item will be cleaned when get cache item.
+	// if not set, no background cleanup is performed.
 	//
-	// 缓存数据清理时间间隔, 如果未设定将在获取数据时才清理过期数据.
+	// 缓存数据清理时间间隔, 如果未设定则不进行后台清理
 	CleanDuration time.Duration
 
 	// Expiration is the duration of cache item to be expired.
@@ -29,6 +29,11 @@ type Options[K comparable, V any] struct {
 	//
 	// 缓存数据加载函数, 当缓存数据不存在或已过期时调用.
 	LoadFunc func(ctx context.Context, key K) (V, error)
+
+	// RemoveFunc is called when an entry is removed.
+	//
+	// 条目移除回调, 实际替换、逐出或关闭清空时调用, 仅过期不触发
+	RemoveFunc func(key K, value V)
 
 	// Size is the size of cache, if not set, the cache will not be limited.
 	//
@@ -47,9 +52,9 @@ func applyOptions[K comparable, V any](o *Options[K, V], opts ...Option[K, V]) *
 }
 
 // WithCleanDuration sets the duration of clean expired items asynchronously,
-// if not set, the cache item will be cleaned when get cache item.
+// if not set, no background cleanup is performed.
 //
-// 设置缓存数据清理时间间隔, 如果未设定将在获取数据时才清理过期数据.
+// 设置缓存数据清理时间间隔, 如果未设定则不进行后台清理
 func WithCleanDuration[K comparable, V any](cleanDuration time.Duration) Option[K, V] {
 	return func(opts *Options[K, V]) {
 		if cleanDuration <= 0 {
@@ -77,6 +82,15 @@ func WithExpiration[K comparable, V any](expiration time.Duration) Option[K, V] 
 func WithLoadFunc[K comparable, V any](loadFunc func(ctx context.Context, key K) (V, error)) Option[K, V] {
 	return func(opts *Options[K, V]) {
 		opts.LoadFunc = loadFunc
+	}
+}
+
+// WithRemoveFunc sets the callback for removed entries.
+//
+// 设置移除回调, 当缓存数据被移除时调用.
+func WithRemoveFunc[K comparable, V any](removeFunc func(key K, value V)) Option[K, V] {
+	return func(opts *Options[K, V]) {
+		opts.RemoveFunc = removeFunc
 	}
 }
 

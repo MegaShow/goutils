@@ -9,7 +9,7 @@ English | [中文](README_zh.md)
 
 > English version is translated by tool.
 
-`go.icytown.com/utils` is MegaShow's Golang tool library, based on Go 1.21 and type generic. It implements common data structures, tools, cache and etc.
+`go.icytown.com/utils` is MegaShow's Go utility library, built on Go 1.23 and generics. It provides common data structures, utilities, and cache implementations.
 
 ## Installation
 
@@ -17,11 +17,15 @@ English | [中文](README_zh.md)
 go get go.icytown.com/utils@latest
 ```
 
-## Usages
+The latest version requires Go 1.23 or later. For older Go versions, use:
 
-For details, please refer to [GoDoc](https://pkg.go.dev/go.icytown.com/utils)。
+- v0.1.9: Go 1.21+
 
-GoUtils provides the following tools.
+## Usage
+
+For detailed usage instructions, see [GoDoc](https://pkg.go.dev/go.icytown.com/utils).
+
+GoUtils provides the following utility packages.
 
 | Package | Functions or Data Structures |
 | -- | -- |
@@ -34,7 +38,7 @@ GoUtils provides the following tools.
 | usync | Singleflight |
 | uversion | SemVer |
 
-GoUtils alse provides some commonly used containers.
+GoUtils also provides commonly used container implementations.
 
 | Package | Containers |
 | -- | -- |
@@ -44,9 +48,9 @@ GoUtils alse provides some commonly used containers.
 | stacks | ArrayStack |
 | tuples | Pair, Triple |
 
-In addition, GoUtils alse provides some implementation of cache.
+In addition, GoUtils provides cache implementations.
 
-- SimpleCache (Experimental)：a simple cache implementation based on map.
+- SimpleCache (experimental): a simple map-based cache implementation.
 
 ## License
 

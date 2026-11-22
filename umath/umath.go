@@ -5,25 +5,35 @@ package umath
 
 import "math"
 
-// FloorFloat returns the least float64 value greater than or equal to x with special precision.
+// CeilFloat rounds x up to the given decimal precision.
+// Positive precision keeps fractional digits; negative precision rounds to powers of ten.
+// It uses float64 scaling; extreme values or precision may cause overflow, underflow, Inf or NaN.
 //
-// 返回一个最小的比给定值大或相等的, 具备特定精度的浮点数值.
+// 按指定十进制精度向上取整, 正精度保留小数位, 负精度取整到十的幂次位
+// 使用 float64 缩放, 极端数值或精度可能产生溢出、下溢、Inf 或 NaN
 func CeilFloat(x float64, precision int) float64 {
 	p := math.Pow10(precision)
 	return math.Ceil(x*p) / p
 }
 
-// FloorFloat returns the greastest float64 value less than or equal to x with special precision.
+// FloorFloat rounds x down to the given decimal precision.
+// Positive precision keeps fractional digits; negative precision rounds to powers of ten.
+// It uses float64 scaling; extreme values or precision may cause overflow, underflow, Inf or NaN.
 //
-// 返回一个最大的比给定值小或相等的, 具备特定精度的浮点数值.
+// 按指定十进制精度向下取整, 正精度保留小数位, 负精度取整到十的幂次位
+// 使用 float64 缩放, 极端数值或精度可能产生溢出、下溢、Inf 或 NaN
 func FloorFloat(x float64, precision int) float64 {
 	p := math.Pow10(precision)
 	return math.Floor(x*p) / p
 }
 
-// RoundFloat returns a nearest float64 value with special precision.
+// RoundFloat rounds x to the nearest value at the given decimal precision, with ties away from zero.
+// Positive precision keeps fractional digits; negative precision rounds to powers of ten.
+// It uses float64 scaling; extreme values or precision may cause overflow, underflow, Inf or NaN.
 //
-// 返回一个与给定值最接近的具备特定精度的浮点数值.
+// 按指定十进制精度四舍五入, 中间值向远离零的方向取整
+// 正精度保留小数位, 负精度取整到十的幂次位
+// 使用 float64 缩放, 极端数值或精度可能产生溢出、下溢、Inf 或 NaN
 func RoundFloat(x float64, precision int) float64 {
 	p := math.Pow10(precision)
 	return math.Round(x*p) / p

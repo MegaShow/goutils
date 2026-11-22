@@ -48,6 +48,9 @@ func (s *ArrayStack[T]) Pop() (T, bool) {
 		return zero, false
 	}
 	top := s.items[len(s.items)-1]
+	// 缩短切片不会清除底层数组中的引用, 先清零以便 GC 回收已弹出的对象
+	var zero T
+	s.items[len(s.items)-1] = zero
 	s.items = s.items[:len(s.items)-1]
 	return top, true
 }
@@ -63,6 +66,8 @@ func (s *ArrayStack[T]) Push(item T) {
 //
 // 移除栈的所有元素.
 func (s *ArrayStack[T]) Clear() {
+	// 清除元素引用后复用底层数组, 避免空栈继续持有原有对象
+	clear(s.items)
 	s.items = s.items[:0]
 }
 

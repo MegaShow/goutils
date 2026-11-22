@@ -3,6 +3,7 @@ package caches
 import (
 	"context"
 	"fmt"
+	"strconv"
 	"time"
 )
 
@@ -12,7 +13,7 @@ func Example() {
 		WithCleanDuration[int, string](time.Minute),
 		WithExpiration[int, string](time.Hour),
 		WithLoadFunc(func(ctx context.Context, key int) (string, error) {
-			return fmt.Sprint(key), nil
+			return strconv.Itoa(key), nil
 		}),
 	)
 	defer func() { _ = cache.Close() }()

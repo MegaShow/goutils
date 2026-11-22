@@ -18,6 +18,7 @@ func (obj __struct) Method() {}
 func (obj __struct) method() {}
 
 func TestGetFuncFullName(t *testing.T) {
+	t.Parallel()
 	assert.Equal(t, "go.icytown.com/utils/uruntime.GetFuncFullName", GetFuncFullName(GetFuncFullName))
 	assert.Equal(t, "go.icytown.com/utils/uruntime.GetFuncName", GetFuncFullName(GetFuncName))
 	assert.Equal(t, "go.icytown.com/utils/uruntime.TestGetFuncFullName.func1", GetFuncFullName(func() {}))
@@ -30,6 +31,7 @@ func TestGetFuncFullName(t *testing.T) {
 }
 
 func TestGetFuncName(t *testing.T) {
+	t.Parallel()
 	assert.Equal(t, "GetFuncFullName", GetFuncName(GetFuncFullName))
 	assert.Equal(t, "GetFuncName", GetFuncName(GetFuncName))
 	assert.Equal(t, "func1", GetFuncName(func() {}))

@@ -4,8 +4,8 @@
 package ucrypto
 
 import (
-	"crypto/md5"
-	"crypto/sha1"
+	"crypto/md5"  //nolint:gosec // 兼容 MD5 摘要, 不用于安全认证
+	"crypto/sha1" //nolint:gosec // 兼容 SHA1 摘要, 不用于安全认证
 	"crypto/sha256"
 	"crypto/sha512"
 	"encoding/hex"
@@ -17,7 +17,7 @@ import (
 //
 // 以十六进制字符串形式返回 MD5 哈希值.
 func MD5Hex(data string) string {
-	sum := md5.Sum(xstring.StringToBytes(data))
+	sum := md5.Sum(xstring.StringToBytes(data)) //nolint:gosec // 兼容 MD5 摘要, 不用于安全认证
 	return hex.EncodeToString(sum[:])
 }
 
@@ -25,7 +25,7 @@ func MD5Hex(data string) string {
 //
 // 以十六进制字符串形式返回 SHA1 哈希值.
 func SHA1Hex(data string) string {
-	sum := sha1.Sum(xstring.StringToBytes(data))
+	sum := sha1.Sum(xstring.StringToBytes(data)) //nolint:gosec // 兼容 SHA1 摘要, 不用于安全认证
 	return hex.EncodeToString(sum[:])
 }
 

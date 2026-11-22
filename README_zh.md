@@ -7,13 +7,17 @@
 [![GitHub Release](https://img.shields.io/github/v/release/megashow/goutils)](https://github.com/megashow/goutils/releases)
 [![Go Reference](https://pkg.go.dev/badge/go.icytown.com/utils.svg)](https://pkg.go.dev/go.icytown.com/utils)
 
-`go.icytown.com/utils` 是 MegaShow 的 Golang 工具库，基于 Go 1.21 和泛型能力，实现了常用的数据结构、工具、缓存封装等。
+`go.icytown.com/utils` 是 MegaShow 的 Golang 工具库，基于 Go 1.23 和泛型能力，实现了常用的数据结构、工具、缓存封装等。
 
 ## 安装
 
 ```sh
 go get go.icytown.com/utils@latest
 ```
+
+最新版本要求 Go 1.23 或更高版本，低于此要求可使用以下版本：
+
+- v0.1.9: Go 1.21+
 
 ## 使用
 

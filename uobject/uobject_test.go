@@ -7,6 +7,7 @@ import (
 )
 
 func TestDefault(t *testing.T) {
+	t.Parallel()
 	assert.Equal(t, 12, Default(12, 100))
 	assert.Equal(t, 100, Default(0, 100))
 	assert.Equal(t, 12.0, Default(12.0, 100))
@@ -16,6 +17,7 @@ func TestDefault(t *testing.T) {
 }
 
 func TestIndirect(t *testing.T) {
+	t.Parallel()
 	var v1, v2 = 0, 12
 	assert.Equal(t, 0, Indirect(&v1))
 	assert.Equal(t, 12, Indirect(&v2))
@@ -23,6 +25,7 @@ func TestIndirect(t *testing.T) {
 }
 
 func TestIndirectOr(t *testing.T) {
+	t.Parallel()
 	var v1, v2 = 0, 12
 	assert.Equal(t, 0, IndirectOr(&v1, 12))
 	assert.Equal(t, 12, IndirectOr(&v2, 13))
@@ -31,6 +34,7 @@ func TestIndirectOr(t *testing.T) {
 }
 
 func TestIsNotZero(t *testing.T) {
+	t.Parallel()
 	assert.True(t, IsNotZero(1))
 	assert.False(t, IsNotZero(0))
 	assert.True(t, IsNotZero("1"))
@@ -38,6 +42,7 @@ func TestIsNotZero(t *testing.T) {
 }
 
 func TestIsZero(t *testing.T) {
+	t.Parallel()
 	assert.False(t, IsZero(1))
 	assert.True(t, IsZero(0))
 	assert.False(t, IsZero("1"))
@@ -45,6 +50,7 @@ func TestIsZero(t *testing.T) {
 }
 
 func TestPtr(t *testing.T) {
+	t.Parallel()
 	var v1, v2 = 0, 12
 	assert.Equal(t, &v1, Ptr(0))
 	assert.Equal(t, &v2, Ptr(12))

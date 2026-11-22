@@ -7,6 +7,7 @@ import (
 )
 
 func TestNewPool(t *testing.T) {
+	t.Parallel()
 	type s struct{}
 	p := NewPool[*s](nil)
 	assert.NotNil(t, p)
@@ -15,6 +16,7 @@ func TestNewPool(t *testing.T) {
 }
 
 func TestPool_Get(t *testing.T) {
+	t.Parallel()
 	type s struct{ v int }
 	p := NewPool[*s](nil)
 	assert.Nil(t, p.Get())
@@ -30,9 +32,10 @@ func TestPool_Get(t *testing.T) {
 }
 
 func TestPool_Put(t *testing.T) {
+	t.Parallel()
 	type s struct{ v int }
 	p := NewPool(func() *s { return &s{} })
-	for i := 0; i < 100; i++ {
+	for range 100 {
 		p.Put(&s{v: 1})
 	}
 	assert.Equal(t, 1, p.Get().v)

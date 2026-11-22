@@ -3,6 +3,8 @@
 // 包 uslice 提供了切片相关的工具.
 package uslice
 
+import "slices"
+
 // All returns true if all items satisfy the match function.
 //
 // 返回 true 如果所有元素都满足给定函数条件.
@@ -33,9 +35,9 @@ func Find[T any](items []T, match func(item T) bool) (res T, ok bool) {
 //
 // 返回最后一个满足给定函数条件的元素.
 func FindLast[T any](items []T, match func(item T) bool) (res T, ok bool) {
-	for i := len(items) - 1; i >= 0; i-- {
-		if match(items[i]) {
-			return items[i], true
+	for _, item := range slices.Backward(items) {
+		if match(item) {
+			return item, true
 		}
 	}
 	return
@@ -83,6 +85,9 @@ func Map[T, R any](items []T, conv func(item T) R) []R {
 //
 // 创建一个切片, 如果未给定元素则返回空切片.
 func Of[T any](items ...T) []T {
+	if items == nil {
+		return make([]T, 0)
+	}
 	return items
 }
 

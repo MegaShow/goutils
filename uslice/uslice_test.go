@@ -8,12 +8,20 @@ import (
 )
 
 func TestAll(t *testing.T) {
+	t.Parallel()
 	assert.True(t, All([]int{1, 2, 3}, func(v int) bool { return v > 0 }))
 	assert.False(t, All([]int{1, 2, 3}, func(v int) bool { return v > 1 }))
 	assert.True(t, All([]int{}, func(v int) bool { return v > 0 }))
 }
 
+func TestFilter(t *testing.T) {
+	t.Parallel()
+	assert.Equal(t, []int{2, 3}, Filter([]int{1, 2, 3}, func(v int) bool { return v > 1 }))
+	assert.Equal(t, []string{"1", "2", "3"}, Filter([]string{"1", "2", "3"}, func(v string) bool { return v != "" }))
+}
+
 func TestFind(t *testing.T) {
+	t.Parallel()
 	value, ok := Find([]int{1, 2, 3}, func(v int) bool { return v == 1 })
 	assert.Equal(t, 1, value)
 	assert.True(t, ok)
@@ -26,6 +34,7 @@ func TestFind(t *testing.T) {
 }
 
 func TestFindLast(t *testing.T) {
+	t.Parallel()
 	value, ok := FindLast([]int{1, 2, 3}, func(v int) bool { return v == 1 })
 	assert.Equal(t, 1, value)
 	assert.True(t, ok)
@@ -37,22 +46,33 @@ func TestFindLast(t *testing.T) {
 	assert.False(t, ok)
 }
 
-func TestFilter(t *testing.T) {
-	assert.Equal(t, []int{2, 3}, Filter([]int{1, 2, 3}, func(v int) bool { return v > 1 }))
-	assert.Equal(t, []string{"1", "2", "3"}, Filter([]string{"1", "2", "3"}, func(v string) bool { return v != "" }))
-}
-
 func TestGroupBy(t *testing.T) {
+	t.Parallel()
 	assert.Equal(t, map[int][]int{1: {1, 5, 5, 3}, 0: {4, 6}}, GroupBy([]int{1, 4, 5, 5, 3, 6}, func(v int) int { return v % 2 }))
 	assert.Equal(t, map[bool][]int{false: {1, 2, 2, 3}, true: {4, 6}}, GroupBy([]int{1, 4, 2, 2, 3, 6}, func(v int) bool { return v > 3 }))
 }
 
 func TestMap(t *testing.T) {
+	t.Parallel()
 	assert.Equal(t, []int{2, 3, 4}, Map([]int{1, 2, 3}, func(v int) int { return v + 1 }))
 	assert.Equal(t, []string{"1", "2", "3"}, Map([]int{1, 2, 3}, func(v int) string { return strconv.FormatInt(int64(v), 10) }))
 }
 
+func TestOf(t *testing.T) {
+	t.Parallel()
+	items := Of[int]()
+	assert.NotNil(t, items)
+	assert.Equal(t, 0, len(items))
+	var nilItems []int
+	assert.NotNil(t, Of(nilItems...))
+	assert.Equal(t, []int{1, 2}, Of(1, 2))
+	source := []int{1, 2}
+	Of(source...)[0] = 3
+	assert.Equal(t, 3, source[0])
+}
+
 func TestToMap(t *testing.T) {
+	t.Parallel()
 	assert.Equal(t, map[string]int{"1": 1, "2": 2}, ToMap([]int{1, 2}, func(v int) string { return strconv.FormatInt(int64(v), 10) }))
 	type obj struct {
 		id   int
@@ -63,6 +83,7 @@ func TestToMap(t *testing.T) {
 }
 
 func TestUnique(t *testing.T) {
+	t.Parallel()
 	assert.Equal(t, []int{1, 2, 3, 4, 5}, Unique([]int{1, 2, 3, 4, 5}))
 	assert.Equal(t, []int{1, 2, 4}, Unique([]int{1, 2, 2, 4, 4}))
 	assert.Equal(t, []int{1, 2, 4}, Unique([]int{1, 2, 2, 4, 4, 1}))
@@ -70,6 +91,7 @@ func TestUnique(t *testing.T) {
 }
 
 func TestUniqueFunc(t *testing.T) {
+	t.Parallel()
 	assert.Equal(t, []int{1, 2, 3, 4, 5}, UniqueFunc([]int{1, 2, 3, 4, 5}, func(v int) int { return v }))
 	assert.Equal(t, []int{1, 2, 4}, UniqueFunc([]int{1, 2, 2, 4, 4}, func(v int) int { return v }))
 	assert.Equal(t, []int{1, 2, 4}, UniqueFunc([]int{1, 2, 2, 4, 4, 1}, func(v int) int { return v }))

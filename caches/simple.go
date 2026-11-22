@@ -8,12 +8,13 @@ import (
 	"go.icytown.com/utils/usync"
 )
 
-type simpleItem[V any] struct {
+type simpleItem[K comparable, V any] struct {
+	key    K
 	value  V
 	expire time.Time
 }
 
-func (item *simpleItem[V]) isExpired(now *time.Time) bool {
+func (item *simpleItem[K, V]) isExpired(now *time.Time) bool {
 	if item.expire.IsZero() {
 		return false
 	}
@@ -27,7 +28,7 @@ type simpleCache[K comparable, V any] struct {
 	opts  *Options[K, V]
 	mu    sync.RWMutex
 	sf    usync.Singleflight[K, V]
-	items map[K]simpleItem[V]
+	items map[K]simpleItem[K, V]
 	close chan struct{}
 }
 
@@ -39,16 +40,21 @@ func NewSimpleCache[K comparable, V any](opts ...Option[K, V]) Cache[K, V] {
 		opts:  applyOptions(nil, opts...),
 		close: make(chan struct{}),
 	}
-	c.items = make(map[K]simpleItem[V], c.opts.Size)
+	c.items = make(map[K]simpleItem[K, V], c.opts.Size)
 
 	// 指定清理时间时, 创建 goroutine 定时清理缓存
 	if c.opts.CleanDuration > 0 {
 		go func() {
+			maxSize := c.opts.Size
+			if maxSize == 0 {
+				maxSize = -1
+			}
 			ticker := time.NewTicker(c.opts.CleanDuration)
+			defer ticker.Stop()
 			for {
 				select {
 				case <-ticker.C:
-					c.evict(c.opts.Size)
+					c.evict(maxSize)
 				case <-c.close:
 					return
 				}
@@ -59,17 +65,26 @@ func NewSimpleCache[K comparable, V any](opts ...Option[K, V]) Cache[K, V] {
 	return c
 }
 
-// Close closes cache and stop clean goroutine.
+// Close stops cleaning and removes all entries.
+// Callers must stop using the cache before Close; subsequent operations are undefined.
 //
-// 关闭缓存和停止清理 goroutine.
+// 关闭缓存并移除所有条目; 调用前应停止使用缓存, 关闭后的操作行为未定义
 func (c *simpleCache[K, V]) Close() error {
+	c.mu.Lock()
 	close(c.close)
+	removed := make([]simpleItem[K, V], 0, len(c.items))
+	for _, item := range c.items {
+		removed = append(removed, item)
+	}
+	clear(c.items)
+	c.mu.Unlock()
+	c.notifyRemove(removed)
 	return nil
 }
 
-// Get read item from cache by key, if sets loader func option and item is not found, it will call loader func and return.
+// Get reads an item, or calls the configured loader if missing or expired.
 //
-// 根据 key 读取缓存数据, 如果设置了数据加载函数并且数据不存在, 则调用该函数并返回数据.
+// 读取数据, 缺失或过期时调用加载函数.
 func (c *simpleCache[K, V]) Get(ctx context.Context, key K) (V, error) {
 	c.mu.RLock()
 	item, ok := c.items[key]
@@ -97,57 +112,67 @@ func (c *simpleCache[K, V]) Get(ctx context.Context, key K) (V, error) {
 //
 // 根据 key 写入缓存数据.
 func (c *simpleCache[K, V]) Set(_ context.Context, key K, value V) error {
-	item := simpleItem[V]{value: value}
+	item := simpleItem[K, V]{key: key, value: value}
 	if c.opts.Expiration > 0 {
 		item.expire = time.Now().Add(c.opts.Expiration)
 	}
-
-	// 未指定清理时间, 则在写入数据时检查是否需要清理
-	if c.opts.CleanDuration == 0 {
-		c.mu.RLock()
-		cacheLen := len(c.items)
-		c.mu.RUnlock()
-		if c.opts.Size > 0 && cacheLen >= c.opts.Size {
-			c.evict(c.opts.Size - 1)
-		}
-	}
+	var removed []simpleItem[K, V]
 
 	c.mu.Lock()
+	old, ok := c.items[key]
+	// 缓存已满时, 为新增条目腾出位置
+	if !ok && c.opts.Size > 0 && len(c.items) >= c.opts.Size {
+		removed = c.evictLocked(c.opts.Size - 1)
+	}
 	c.items[key] = item
 	c.mu.Unlock()
+	if ok {
+		removed = append(removed, old)
+	}
+	c.notifyRemove(removed)
 	return nil
 }
 
 func (c *simpleCache[K, V]) evict(maxSize int) {
-	// 获取需要逐出的数据
+	c.mu.Lock()
+	removed := c.evictLocked(maxSize)
+	c.mu.Unlock()
+	c.notifyRemove(removed)
+}
+
+// evictLocked removes expired and excess entries and returns them for notification.
+//
+// 移除过期及超出容量的条目, 返回待通知的条目
+func (c *simpleCache[K, V]) evictLocked(maxSize int) []simpleItem[K, V] {
 	now := time.Now()
-	evictKeys := make([]K, 0)
-	c.mu.RLock()
+	var removed []simpleItem[K, V]
+
+	// 清除过期数据
 	for key, item := range c.items {
 		if item.isExpired(&now) {
-			evictKeys = append(evictKeys, key)
+			delete(c.items, key)
+			removed = append(removed, item)
 		}
-	}
-	// 过期数据逐出还不够, 需要逐出未过期数据
-	if maxSize > 0 && len(evictKeys) < len(c.items)-maxSize {
-		for key, item := range c.items {
-			if !item.isExpired(&now) {
-				evictKeys = append(evictKeys, key)
-				if len(evictKeys) >= len(c.items)-maxSize {
-					break
-				}
-			}
-		}
-	}
-	c.mu.RUnlock()
-	if len(evictKeys) == 0 {
-		return
 	}
 
-	// 清除数据
-	c.mu.Lock()
-	for _, key := range evictKeys {
-		delete(c.items, key)
+	// 过期数据逐出还不够, 需要逐出未过期数据
+	if maxSize >= 0 {
+		for key, item := range c.items {
+			if len(c.items) <= maxSize {
+				break
+			}
+			delete(c.items, key)
+			removed = append(removed, item)
+		}
 	}
-	c.mu.Unlock()
+
+	return removed
+}
+
+func (c *simpleCache[K, V]) notifyRemove(items []simpleItem[K, V]) {
+	if c.opts.RemoveFunc != nil {
+		for _, item := range items {
+			c.opts.RemoveFunc(item.key, item.value)
+		}
+	}
 }

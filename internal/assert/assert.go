@@ -89,7 +89,6 @@ func NotNil(t Testing, value any) bool {
 		return false
 	}
 	return true
-
 }
 
 func NotPanics(t Testing, f func()) bool {
